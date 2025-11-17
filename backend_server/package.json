@@ -5,7 +5,7 @@
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "tsx src/index.ts",
+    "dev": "nodemon --exec tsx src/app.ts",
     "build": "tsc",
     "start": "node dist/index.js",
     "test": "npm run build && node dist/index.js --dry-run"
@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^5.1.0",
+    "nodemon": "^3.1.11",
     "socket.io": "^4.8.1"
   },
   "devDependencies": {
