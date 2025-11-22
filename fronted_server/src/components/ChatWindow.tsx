@@ -22,7 +22,7 @@ const ChatWindow: React.FC<{ conversation: Conversation; onSend: (text: string) 
           <MessageBubble key={m.id} message={m} />
         ))}
       </div>
-      <MessageInput onSend={onSend} />
+      <MessageInput onSend={onSend} /> 
     </div>
   )
 }
