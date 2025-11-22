@@ -26,4 +26,15 @@ export const sampleConversations: Conversation[] = [
       { id: 'g2', text: 'Looks good — pushed minor tweaks.', timestamp: now(), sender: 'me' },
     ],
   },
+  {
+    id: '3',
+    name: 'Bikash',
+    avatar: '',
+    lastMessage: 'Kaise ho',
+    unread: 0,
+    messages: [
+      { id: 'g1', text: 'Commit the channges.', timestamp: now(), sender: 'them' },
+      { id: 'g2', text: 'Looks good — pushed minor tweaks.', timestamp: now(), sender: 'me' },
+    ],
+  }
 ]

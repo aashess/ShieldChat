@@ -5,7 +5,7 @@ import ChatWindow from './components/ChatWindow'
 import type { Conversation, Message } from '../src/types' 
 import { sampleConversations } from '../src/mock'
 
-const App: React.FC = () => {
+const App = () => {
   const [conversations, setConversations] = useState<Conversation[]>(() => sampleConversations)
   const [selectedId, setSelectedId] = useState<string>(conversations[0]?.id ?? '')
 
