@@ -11,28 +11,61 @@ app.use(cors());
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",   // Your React app URL (Vite example)
+    origin: "*",   // Your React app URL (Vite example)
     methods: ["GET", "POST"]
   }
 });
 
 
-// app.use("/", router);
+// store users → socket
+const users:any = {}; // { username: socketId }
+
+function getRoomName(user1:any, user2:any) {
+  const sorted = [user1, user2].sort();
+  return `room_${sorted[0]}_${sorted[1]}`;
+}
 
 
+io.on("connection", (socket) => {   
+    const username:any = socket.handshake.query.username; // alice or bob
+  
+  // console.log("User connected:", socket.id);
+    console.log(username, "connected");
+      users[username] = socket.id;
 
-io.on("connection", (socket) => {
-  console.log("User connected:", socket.id);
 
-  socket.on("message", (data) => {
-    console.log("Received:", data);
-    io.emit("message", data); // send to all clients
+       // Only Alice & Bob allowed in this example
+  if (username !== "alice" && username !== "bob") {
+    console.log("Unknown user:", username);
+    return;
+  }
+
+    // When both are connected → put them in the same room
+  if (users["alice"] && users["bob"]) {
+    const room = getRoomName("alice", "bob");
+
+    io.sockets.sockets.get(users["alice"])?.join(room);
+    io.sockets.sockets.get(users["bob"])?.join(room);
+
+    console.log("Room created:", room);
+
+    // notify them
+    io.to(room).emit("system", "Private room ready for Alice & Bob");
+  }
+  
+  // chat message handler
+  socket.on("message", (msg) => {
+    const room = getRoomName("alice", "bob");
+    io.to(room).emit("message", { from: username, text: msg });   //who wants to send message! (username...)
+    console.log(msg);
   });
 
   socket.on("disconnect", () => {
-    console.log("User disconnected:", socket.id);
+    console.log(username, "disconnected");
+    delete users[username];
   });
 });
+
 
 app.get("/", (req, res) => {
   res.send("Hello from backend!");

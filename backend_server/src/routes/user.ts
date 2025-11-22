@@ -5,7 +5,7 @@ import { userControllerSlash } from "../controllers/userControllerSlash.js";
 
 const router = Router();
 
-router.get('/user', userController);
+router.get('/', userController);
 router.get('/create', userControllerSlash);
 
 export default router;
